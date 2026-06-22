@@ -63,6 +63,9 @@
                 <div class="auth-buttons" id="authButtons">
                     <button class="outline" onclick="openModal('loginModal')">ВХОД</button>
                     <button onclick="openModal('registerModal')">РЕГИСТРАЦИЯ</button>
+                    <button id="install-btn" style="display: none; flex-shrink: 0; padding: 8px 16px; background: #f7971e; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+            📲 На телефон
+                    </button>
                 </div>
 
                
@@ -283,6 +286,43 @@
             <img id="modalImage" src="" alt="Фото студии">
         </div>
     </div>
+    <script>
+    let deferredPrompt;
+
+    // 1. Слушаем событие готовности к установке
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        
+        // 2. Показываем кнопку 
+        document.getElementById('install-btn').style.display = 'flex';
+        console.log('Приложение готово к установке!');
+    });
+
+    // 3. Обработчик нажатия на кнопку
+    document.getElementById('install-btn').addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const result = await deferredPrompt.userChoice;
+            console.log('Результат установки:', result.outcome);
+            deferredPrompt = null;
+            document.getElementById('install-btn').style.display = 'none';
+        }
+    });
+
+    // 4. Если браузер не поддерживает установку, прячем кнопку навсегда
+    window.addEventListener('appinstalled', () => {
+        console.log('Приложение было успешно установлено!');
+        document.getElementById('install-btn').style.display = 'none';
+    });
+</script>
+    <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+            .then(() => console.log('Service Worker зарегистрирован!'))
+            .catch((err) => console.error('Ошибка SW:', err));
+    }
+</script>
 </body>
 
         <script>

@@ -1,19 +1,19 @@
 {
   "name": "Лего-Студия MIRACLE",
   "short_name": "Lego Miracle",
-  "description": "Школа юных инженеров. Занятия по легоконструированию и робототехнике в Вологде для детей 4–9 лет.",
-  "start_url": "/Lego-site3/",
+  "description": "Школа юных инженеров...",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#d61c1c",
   "icons": [
     {
-      "src": "images/icon.png",
+      "src": "icon.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "images/icon.png",
+      "src": "icon.png",
       "sizes": "512x512",
       "type": "image/png"
     }
