@@ -1,4 +1,3 @@
-/* ===== Базовые сбросы и переменные ===== */
 * {
     margin: 0;
     padding: 0;
@@ -27,7 +26,6 @@ body {
     padding: 0 20px;
 }
 
-/* ===== Шапка сайта ===== */
 header {
     background: var(--white);
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
@@ -116,7 +114,7 @@ header {
     color: white;
 }
 
-/* ===== Стили для кнопки установки приложения ===== */
+/*стили для кнопки*/
 #install-btn {
     background: var(--yellow);
     color: var(--dark);
@@ -136,7 +134,7 @@ header {
     background: #e6c000;
 }
 
-/* =====  (Главный экран) ===== */
+/*    Главный экран  */
 .hero {
     background: var(--red);
     padding: 80px 0;
@@ -181,7 +179,7 @@ header {
     transform: scale(1.02);
 }
 
-/* ===== Заголовки секций ===== */
+/* заголовки секций  */
 section {
     padding: 80px 0;
 }
@@ -499,7 +497,7 @@ h2:after {
     border-radius: 8px;
 }
 
-/* ===== Формы и отзывы ===== */
+
 form input,
 form textarea {
     width: 100%;
@@ -577,7 +575,6 @@ form button:hover {
     letter-spacing: 2px;
 }
 
-/* ===== Подвал ===== */
 footer {
     background: var(--dark);
     color: white;
@@ -620,7 +617,7 @@ body.dark-theme .service-img-slider {
     background-color: #3d3d3d;
 }
 
-/* ===== Адаптивность для мобильных устройств (до 768px) ===== */
+/* ===== Адаптивность для мобильных устройств, без этого блока сайт отображался некорректно на телефоне */
 @media (max-width: 768px) {
     .hero h1 {
         font-size: 1.8rem !important;
@@ -652,7 +649,6 @@ body.dark-theme .service-img-slider {
         font-size: 0.75rem !important;
     }
 
-    /* Уменьшаем все кнопки в шапке на мобильных */
     .auth-buttons button,
     #install-btn {
         padding: 5px 12px;
@@ -702,7 +698,7 @@ body.dark-theme .service-img-slider {
     }
 }
 
-/* ===== Всплывашка для ссылки ВК ===== */
+/* ===== Всплывашка для ВК ===== */
 .vk-hover-container {
     position: relative;
     display: inline-block;
