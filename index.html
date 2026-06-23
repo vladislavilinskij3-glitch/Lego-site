@@ -456,31 +456,53 @@
             this.reset();
         });
 
-        // Обработка формы "Записаться на пробное занятие" (с валидацией)
-        document.getElementById('trialForm').addEventListener('submit', function(e) {
+                // Обработка формы "Записаться на пробное занятие" (с отправкой на PHP-сервер)
+        document.getElementById('trialForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const name = this.querySelector('input[placeholder="Ваше имя"]').value.trim();
             const phone = this.querySelector('input[placeholder="Телефон"]').value.trim();
             const age = this.querySelector('input[placeholder="Возраст ребёнка"]').value.trim();
 
-            // Проверка на заполнение полей
+            // Валидация
             if (!name || !phone || !age) {
                 alert('Пожалуйста, заполните все поля формы!');
                 return;
             }
-            // Проверка длины номера телефона
             if (phone.length < 10) {
                 alert('Пожалуйста, введите корректный номер телефона!');
                 return;
             }
 
-            // Вывод данных в консоль 
-            console.log('📝 Новая заявка (пробное занятие):', { name, phone, age });
-            alert('Спасибо! Ваша заявка принята (данные выведены в консоль).');
+            // Собираем данные в объект FormData
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('phone', phone);
+            formData.append('age', age);
 
-            this.reset();
-            closeModal('trialModal');
+            // ЗАМЕНИТЕ URL НА АДРЕС ВАШЕГО ФАЙЛА send.php НА ХОСТИНГЕ
+            const url = 'https://miracle-studiovologda.kesug.com/send.php';
+
+            try {
+                // Отправляем POST-запрос на PHP-скрипт
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'ok') {
+                    alert('✅ Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.');
+                    this.reset();
+                    closeModal('trialModal');
+                } else {
+                    alert('❌ Ошибка отправки: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Ошибка сети:', error);
+                alert('❌ Ошибка соединения с сервером. Попробуйте позже.');
+            }
         });
 
         // Обработка формы обратной связи (с валидацией)
