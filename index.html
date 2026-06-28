@@ -19,6 +19,7 @@
     <link rel="icon" href="icon.png" type="image/png">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
+    <link rel="sw" href="sw.js">
 
     <!-- Подключение виджета -->
     <script src="https://vk.com/js/api/openapi.js?168" type="text/javascript"></script>
@@ -457,53 +458,42 @@
         });
 
                 // Обработка формы "Записаться на пробное занятие" (с отправкой на PHP-сервер)
-        document.getElementById('trialForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+        // Обработчик формы "Записаться"
+document.getElementById('trialForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
 
-            const name = this.querySelector('input[placeholder="Ваше имя"]').value.trim();
-            const phone = this.querySelector('input[placeholder="Телефон"]').value.trim();
-            const age = this.querySelector('input[placeholder="Возраст ребёнка"]').value.trim();
+    const name = this.querySelector('input[placeholder="Ваше имя"]').value.trim();
+    const phone = this.querySelector('input[placeholder="Телефон"]').value.trim();
+    const age = this.querySelector('input[placeholder="Возраст ребёнка"]').value.trim();
 
-            // Валидация
-            if (!name || !phone || !age) {
-                alert('Пожалуйста, заполните все поля формы!');
-                return;
-            }
-            if (phone.length < 10) {
-                alert('Пожалуйста, введите корректный номер телефона!');
-                return;
-            }
+    if (!name || !phone || !age) {
+        alert('Пожалуйста, заполните все поля');
+        return;
+    }
 
-            // Собираем данные в объект FormData
-            const formData = new FormData();
-            formData.append('name', name);
-            formData.append('phone', phone);
-            formData.append('age', age);
+    const formData = new FormData();
+    formData.append('fields[NAME]', name); // Имя клиента
+    formData.append('fields[PHONE][0][VALUE]', phone); // Телефон
+    formData.append('fields[COMMENTS]', `Возраст ребенка: ${age}`); // Комментарий
 
-            
-            const url = 'https://miracle-studiovologda.kesug.com/send.php';
+    // ЗАМЕНИТЕ ЭТУ СТРОКУ НА ВАШУ ССЫЛКУ ИЗ БИТРИКСА!
+    const url = 'https://ваш_домен.bitrix24.ru/rest/1/секретный_код/crm.lead.add.json';
 
-            try {
-                // Отправляем POST-запрос на PHP-скрипт
-                const response = await fetch(url, {
-                    method: 'POST',
-                    body: formData
-                });
+    try {
+        const response = await fetch(url, { method: 'POST', body: formData });
+        const result = await response.json();
 
-                const result = await response.json();
-
-                if (result.status === 'ok') {
-                    alert('✅ Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.');
-                    this.reset();
-                    closeModal('trialModal');
-                } else {
-                    alert('❌ Ошибка отправки: ' + result.message);
-                }
-            } catch (error) {
-                console.error('Ошибка сети:', error);
-                alert('❌ Ошибка соединения с сервером. Попробуйте позже.');
-            }
-        });
+        if (result.result) {
+            alert('✅ Заявка отправлена в CRM! Клиент добавлен.');
+            this.reset();
+            closeModal('trialModal');
+        } else {
+            alert('❌ Ошибка: ' + (result.error_description || 'Неизвестная ошибка'));
+        }
+    } catch (error) {
+        alert('❌ Ошибка соединения с CRM.');
+    }
+});
 
         // Обработка формы обратной связи (с валидацией)
         document.getElementById('contactForm').addEventListener('submit', function(e) {
